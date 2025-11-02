@@ -5,6 +5,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
+    "backend": "node backend/app.js",
+    "backend-dev": "nodemon backend/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["elderly-care", "volunteer", "community", "help-requests", "social-service"],
@@ -17,6 +19,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
     "express": "^5.1.0",
     "mongoose": "^8.16.4"
   },

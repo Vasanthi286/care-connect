@@ -1,0 +1,26 @@
+{
+  "name": "care-connect",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["elderly-care", "volunteer", "community", "help-requests", "social-service"],
+  "author": "Vasanthi286",
+  "license": "ISC",
+  "description": "A web application that connects elderly people with volunteers who can help them with various tasks and services.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vasanthi286/care-connect.git"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}

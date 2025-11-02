@@ -1,0 +1,176 @@
+<!-- view for Volunteer -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Volunteer Dashboard – CareConnect</title>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #2f4f4f;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    nav {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 40px 0 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CareConnect – Elder Help Platform</h1>
+    <h3>Volunteer Dashboard</h3>
+    <nav>
+    <a href="/volunteer-dashboard">Home</a> 
+      <a href="/viewRequest">View Requests</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2 class="section-title">Available Help Requests</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Location</th>
+          <th>Help Type</th>
+          <th>Contact</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="request-list">
+        <!-- Populated by JS -->
+      </tbody>
+    </table>
+
+    <h2 class="section-title">My Accepted Requests</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Help Type</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="my-requests">
+        <!-- Populated by JS -->
+      </tbody>
+    </table>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 CareConnect</p>
+  </footer>
+
+  <script>
+    const volunteerId = localStorage.getItem("volunteerId");
+    if (!volunteerId) {
+      alert("Please login first");
+      window.location.href = "/login";
+    }
+
+    async function loadAvailableRequests() {
+      const res = await fetch('/api/requests/available');
+      const data = await res.json();
+      const tbody = document.getElementById('request-list');
+      tbody.innerHTML = '';
+
+      data.forEach(req => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${req.name}</td>
+          <td>${req.age}</td>
+          <td>${req.location}</td>
+          <td>${req.helpType}</td>
+          <td>${req.contact}</td>
+          <td><button onclick="acceptRequest('${req._id}')">Accept</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    async function acceptRequest(requestId) {
+      await fetch('/api/requests/accept', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestId, volunteerId })
+      });
+      loadAvailableRequests();
+      loadMyRequests();
+    }
+
+    async function loadMyRequests() {
+      const res = await fetch(`/api/requests/my/${volunteerId}`);
+      const data = await res.json();
+      const tbody = document.getElementById('my-requests');
+      tbody.innerHTML = '';
+
+      data.forEach(req => {
+        let actionButton = '';
+        if (req.status === 'Accepted') {
+          actionButton = `<button onclick="updateStatus('${req._id}', 'In Progress')">Start</button>`;
+        } else if (req.status === 'In Progress') {
+          actionButton = `<button onclick="updateStatus('${req._id}', 'Completed')">Complete</button>`;
+        } else {
+          actionButton = '-';
+        }
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${req.name}</td>
+          <td>${req.location}</td>
+          <td>${req.helpType}</td>
+          <td>${req.status || 'Pending'}</td>
+          <td>${actionButton}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    async function updateStatus(requestId, status) {
+      await fetch('/api/requests/update-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestId, status })
+      });
+      loadMyRequests();
+    }
+
+    // Initial load
+    loadAvailableRequests();
+    loadMyRequests();
+  </script>
+</body>
+</html>

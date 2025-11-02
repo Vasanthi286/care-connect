@@ -1,0 +1,80 @@
+/* public/style.css */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #2f4f4f;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+nav {
+  margin-top: 10px;
+}
+
+nav a {
+  color: white;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+main {
+  padding: 20px;
+}
+
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+form label, form input, form select, form button {
+  margin: 10px 0;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #eee;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+#success-message {
+  display: none;
+  color: green;
+  font-weight: bold;
+  text-align: center;
+  background-color: #e6ffed;
+  padding: 10px;
+  border: 1px solid #b6e0c2;
+  border-radius: 5px;
+  width: 60%;
+  margin: 20px auto;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background-color: #eee;
+  width: 100%;
+  position: relative; /* changed from fixed */
+}
